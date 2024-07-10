@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<TestRunParameters>
+		<!--Common Settings-->
+		<Parameter name="browserType" value="chrome" />
+		<!--Parameter name="gridServer" value="http://10.3.14.154:7777/wd/hub-->
+		<Parameter name="gridServer" value="http://localhost:7777/wd/hub" />
+		<Parameter name="timeOut" value="300" />
+		<!--Environment Specific Settings-->
+		<Parameter name="apiEnvironmentName" value="ehr-test" />
+		<Parameter name="api_TenantRequestURL" value="https://ehr-test.nhsnlink.org" />
+		<Parameter name="localhost_Tenant_api_Base" value="http://localhost:8074" />
+	</TestRunParameters>
+
+	<MSTest>
+		<MapInconclusiveToFailed>false</MapInconclusiveToFailed>
+		<Parallelize>
+			<Workers>1</Workers>
+			<Scope>MethodLevel</Scope>
+		</Parallelize>
+	</MSTest>
+
+</RunSettings>
+
+

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<TestRunParameters>
+		<!--Common Settings-->
+		<Parameter name="browserType" value="chrome" />
+		<!--Parameter name="gridServer" value="http://10.3.14.154:7777/wd/hub--> 
+		<Parameter name="gridServer" value="http://localhost:7777/wd/hub" />
+		<Parameter name="timeOut" value="300" />
+		<!--Environment Specific Settings-->
+		<Parameter name="environmentName" value="QA" />
+		<Parameter name="portalURL" value="http://sometestEnvironment.com" />		
+	</TestRunParameters>
+	
+	<MSTest>
+		<MapInconclusiveToFailed>false</MapInconclusiveToFailed>
+		<Parallelize>
+			<Workers>1</Workers>
+			<Scope>MethodLevel</Scope>
+		</Parallelize>
+	</MSTest>
+
+</RunSettings>

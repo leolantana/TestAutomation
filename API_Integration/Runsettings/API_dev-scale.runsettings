@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<TestRunParameters>
+		<!--Common Settings-->
+		<Parameter name="browserType" value="chrome" />
+		<!--Parameter name="gridServer" value="http://10.3.14.154:7777/wd/hub-->
+		<Parameter name="gridServer" value="http://localhost:7777/wd/hub" />
+		<Parameter name="timeOut" value="300" />
+		<!--Environment Specific Settings-->
+		<Parameter name="apiEnvironmentName" value="dev-scale" />
+		<Parameter name="localhost_Tenant_api_Base" value="http://localhost:8074" />
+		<Parameter name="api_TenantRequestURL" value="https://dev-tenant.nhsnlink.org" />
+		<Parameter name="api_AuditRequestURL" value="https://dev-audit.nhsnlink.org" />
+		<Parameter name="api_NotificationRequestURL" value="https://dev-notification.nhsnlink.org" />
+		<Parameter name="api_CensusRequestURL" value="https://dev-census.nhsnlink.org" />
+		<Parameter name="api_DataAcquisitionRequestURL" value="https://dev-data.nhsnlink.org" />
+		<Parameter name="api_NormalizationRequestURL" value="https://dev-normalization.nhsnlink.org" />
+		<Parameter name="api_QueryDispatchURL" value="https://dev-querydispatch.nhsnlink.org" />
+		<Parameter name="api_ReportURL" value="https://dev-report.nhsnlink.org" />
+		<Parameter name="api_MeasureURL" value="https://dev-measure.nhsnlink.org" />				
+		<Parameter name="api_AccountURL" value="https://dev-account.nhsnlink.org" />
+		<Parameter name="api_LinkAdminBffURL" value="https://dev-demo.nhsnlink.org" />
+		
+		<Parameter name="api_Account_MOCKServerURL" value="https://c07355ca-5ba1-4b53-98fd-2babe01c4a5c.mock.pstmn.io" />
+
+
+
+		
+	</TestRunParameters>
+
+	<MSTest>
+		<MapInconclusiveToFailed>false</MapInconclusiveToFailed>
+		<Parallelize>
+			<Workers>1</Workers>
+			<Scope>MethodLevel</Scope>
+		</Parallelize>
+	</MSTest>
+
+</RunSettings>
+
+

@@ -1,0 +1,167 @@
+//Full API response written to Console
+            //var fullResponse = JsonSerializer.Deserialize<JsonNode>(response.Content!)!;
+            //Console.WriteLine(fullResponse);
+
+
+//Authentication for API requests
+            //{
+            //    Authenticator = new HttpBasicAuthenticator(apiconfig["apiUserName"], apiconfig["apiPassword"])
+            //}
+
+
+            ----------------------
+ /*   UTX Time converter
+
+using System;
+
+public class TimeConverter
+{
+    public static string GetCentralTimePlus10MinutesInZulu()
+    {
+        // Get the current time in UTC
+        DateTime utcNow = DateTime.UtcNow;
+        
+        // Define the Central Time Zone
+        TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+        
+        // Convert UTC time to Central Time
+        DateTime centralTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, centralTimeZone);
+        
+        // Add 10 minutes to Central Time
+        DateTime centralTimePlus10Minutes = centralTime.AddMinutes(10);
+        
+        // Convert the new time back to UTC (Zulu Time)
+        DateTime zuluTime = TimeZoneInfo.ConvertTimeToUtc(centralTimePlus10Minutes, centralTimeZone);
+        
+        // Format the result as a string in Zulu time (UTC) format
+        string zuluTimeString = zuluTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        
+        return zuluTimeString;
+    }
+    
+    public static void Main()
+    {
+        string zuluTime = GetCentralTimePlus10MinutesInZulu();
+        Console.WriteLine("Central Time plus 10 minutes in Zulu (UTC): " + zuluTime);
+    }
+}
+*/
+
+
+/*   
+OAuth 2.0 Postman Example
+using System;
+using System.Threading.Tasks;
+using RestSharp;
+
+public class OAuthClient
+{
+    private readonly string clientId;
+    private readonly string clientSecret;
+    private readonly string tokenUrl;
+    private readonly string apiBaseUrl;
+
+    public OAuthClient(string clientId, string clientSecret, string tokenUrl, string apiBaseUrl)
+    {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.tokenUrl = tokenUrl;
+        this.apiBaseUrl = apiBaseUrl;
+    }
+
+    public async Task<string> GetAccessTokenAsync()
+    {
+        var client = new RestClient(tokenUrl);
+        var request = new RestRequest(Method.POST);
+        request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.AddParameter("grant_type", "client_credentials");
+        request.AddParameter("client_id", clientId);
+        request.AddParameter("client_secret", clientSecret);
+
+        var response = await client.ExecuteAsync<OAuthTokenResponse>(request);
+
+        if (!response.IsSuccessful)
+        {
+            throw new Exception("Failed to retrieve access token: " + response.ErrorMessage);
+        }
+
+        return response.Data.AccessToken;
+    }
+
+    public async Task SendPostRequestAsync(string endpoint, object body)
+    {
+        var accessToken = await GetAccessTokenAsync();
+
+        var client = new RestClient(apiBaseUrl);
+        var request = new RestRequest(endpoint, Method.POST);
+        request.AddHeader("Authorization", "Bearer " + accessToken);
+        request.AddHeader("Content-Type", "application/json");
+        request.AddJsonBody(body);
+
+        var response = await client.ExecuteAsync(request);
+
+        if (!response.IsSuccessful)
+        {
+            throw new Exception("POST request failed: " + response.ErrorMessage);
+        }
+
+        Console.WriteLine("Response: " + response.Content);
+    }
+}
+
+public class OAuthTokenResponse
+{
+    public string AccessToken { get; set; }
+    public string TokenType { get; set; }
+    public int ExpiresIn { get; set; }
+}
+
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        string clientId = "your_client_id";
+        string clientSecret = "your_client_secret";
+        string tokenUrl = "https://example.com/oauth/token";
+        string apiBaseUrl = "https://example.com/api";
+        string endpoint = "/your-endpoint";
+        
+        var body = new
+        {
+            key1 = "value1",
+            key2 = "value2"
+        };
+
+        var oauthClient = new OAuthClient(clientId, clientSecret, tokenUrl, apiBaseUrl);
+
+        try
+        {
+            await oauthClient.SendPostRequestAsync(endpoint, body);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+}
+
+
+-----Explanation: 
+    OAuthClient Class:
+        The OAuthClient class encapsulates the logic to obtain an OAuth 2.0 token and send a POST request.
+        GetAccessTokenAsync method makes a POST request to the OAuth 2.0 token endpoint to retrieve the access token.
+        SendPostRequestAsync method uses the access token to send a POST request to the specified endpoint.
+
+    OAuthTokenResponse Class:
+        This class represents the structure of the OAuth token response. Adjust the property names according to the actual response from your OAuth provider.
+
+    Program Class:
+        This is the entry point of the application. It initializes the OAuthClient with the required parameters and sends a POST request.
+
+Usage:
+
+    Replace your_client_id, your_client_secret, https://example.com/oauth/token, https://example.com/api, and /your-endpoint with your actual values.
+    Adjust the body object according to the data you need to send in the POST request.
+
+This code should work for most OAuth 2.0 secured APIs. Make sure to adjust the URL endpoints and other parameters as required by your specific API.
+*/
