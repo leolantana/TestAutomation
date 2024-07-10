@@ -94,7 +94,6 @@ namespace API_Integration.Tests
             api.Verify_GET_RoleByName();
         }
         #endregion
-
         #region Account > Users
         [TestMethod]
         [TestCategory("API_VerifyAuthenticationRequired")]
