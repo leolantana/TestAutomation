@@ -24,11 +24,13 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using System.Diagnostics;
 
 namespace API_Integration.Pages
 {
     public class LinkAdminBFF_Page : BasePage
     {
+
         public LinkAdminBFF_Page(TestRun testRun) : base(testRun)
         {
             this.testRun = testRun;
@@ -1362,6 +1364,48 @@ namespace API_Integration.Pages
             var responseDesc = response.StatusDescription;
             testRun.Verify(TestRun.ComparisonType.StringCompareCaseInsensitive, responseCode, "Unauthorized", "Authorization required as expected");
             testRun.Verify(TestRun.ComparisonType.StringCompareCaseInsensitive, responseDesc, "Unauthorized", "Authorization required as expected");
+        }
+        #endregion
+
+        #region End to End Requests
+        public async Task ValidateStaticFacilityExists()
+        {
+            var options = new RestClientOptions("https://dev-demo.nhsnlink.org")
+            {
+                MaxTimeout = -1,
+            };
+            var client = new RestClient(options);
+            var request = new RestRequest("/api/Facility", Method.Get);
+            request.AddHeader("Authorization", "Bearer "+bearerToken);
+            RestResponse response = await client.ExecuteAsync(request);
+            Console.WriteLine(response.Content);
+
+            JObject jsonResponse = JObject.Parse(response.Content);
+
+            // Extract the "records" array from the JSON response
+            JArray records = (JArray)jsonResponse["records"];
+
+            // Check if any facilityName is "Hospital1_static"
+            bool facilityExists = false;
+
+            foreach (var record in records)
+            {
+                if (record["facilityName"].ToString() == "Hospital1_static")
+                {
+                    facilityExists = true;
+                    break;
+                }
+            }
+
+            // Output the result
+            if (facilityExists)
+            {
+                Console.WriteLine("\"Hospital1_static\" exists in the response.");
+            }
+            else
+            {
+                Console.WriteLine("\"Hospital1_static\" does not exist in the response.");
+            }
         }
         #endregion
     }

@@ -713,5 +713,15 @@ namespace API_Integration.Tests
             api.Verify_GET_APIInfo();
         }
         #endregion
+
+
+
+        [TestMethod]
+        [TestCategory("API_E2E")]
+        public async Task ValidateStaticFacilityExists()
+        {
+            LinkAdminBFF_Page api = new LinkAdminBFF_Page(testRun);
+            await api.ValidateStaticFacilityExists();
+        }
     }
 }
