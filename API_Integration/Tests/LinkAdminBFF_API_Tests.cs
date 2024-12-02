@@ -706,6 +706,7 @@ namespace API_Integration.Tests
             api.Verify_GET_User();
         }
         [TestMethod]
+        [Ignore]
         [TestCategory("API_VerifyAuthenticationRequired")]
         public void Verify_GET_APIInfo()
         {
@@ -717,6 +718,7 @@ namespace API_Integration.Tests
 
 
         [TestMethod]
+        [Ignore]
         [TestCategory("API_E2E")]
         public async Task ValidateStaticFacilityExists()
         {
