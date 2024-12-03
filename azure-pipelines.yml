@@ -1,39 +1,61 @@
+# Trigger pipeline for specific branches
 trigger:
-- main
+  branches:
+    include:
+      - main
+      - feature/*
 
-pool:
-  vmImage: 'windows-latest'
+# Pull Request Validation
+pr:
+  branches:
+    include:
+      - main
 
-variables:
-  solution: '**/*.sln'   
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+# Pipeline Stages
+stages:
+  # Build Stage
+  - stage: Build
+    displayName: "Build Solution"
+    jobs:
+      - job: Build
+        displayName: "Build Job"
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          # Install .NET SDK
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '6.x'
 
-steps:
-- task: NuGetToolInstaller@1
+          # Restore NuGet Packages
+          - task: NuGetCommand@2
+            inputs:
+              command: 'restore'
+              restoreSolution: 'Portal.sln'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+          # Build the Solution
+          - task: VSBuild@1
+            inputs:
+              solution: 'Portal.sln'
+              msbuildArgs: '/p:Configuration=Release'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\\"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    testFiltercriteria: 'TestCategory=API_VerifyAuthenticationRequired'
-    runInParallel: true
-    codeCoverageEnabled: true
-    otherConsoleOptions: '/logger:trx'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  # Test Stage
+  - stage: Test
+    displayName: "Run Automated Tests"
+    dependsOn: Build
+    jobs:
+      - job: Test
+        displayName: "Run Tests"
+        pool:
+          vmImage: 'windows-latest'
+        variables:
+          TestCategory: "API_VerifyAuthenticationRequired" # Default Test Category
+        steps:
+          # Run Tests
+          - task: VSTest@2
+            inputs:
+              testSelector: 'testAssemblies'
+              testAssemblyVer2: '**/bin/Release/*.dll'
+              searchFolder: '$(System.DefaultWorkingDirectory)'
+              otherConsoleOptions: '/TestCaseFilter:"TestCategory=$(TestCategory)"'
